@@ -25,14 +25,14 @@ public class SeatController {
     @Autowired
     private ResponseParser responseParser;
 
-    @PostMapping(value = "/addDefaultSeatMatrix")
+    @PostMapping(value = "/addDefaultSeat")
     public Seat addDefaultSeatMatrix(@RequestBody Seat seatMatrix) throws Exception {
         return this.seatService.addDefaultSeatMatrix(seatMatrix);
     }
 
-    @GetMapping(value = "/getAvailabilityOnAScreen")
+    @GetMapping(value = "/getAvailabilityOnAShow")
     public List<Seat> getAvailabilityOnAScreen(@RequestParam("movieId") String movieId,
-                                                     @RequestParam("threatreId") String theaterId, @RequestParam("screenStartsAt") String screenStartsAt) throws JsonProcessingException {
+                                                     @RequestParam("threatreId") String theaterId, @RequestParam("showStartsAt") String screenStartsAt) throws JsonProcessingException {
         return this.seatService.getAvailabilityOnAScreen(movieId, theaterId, screenStartsAt);
     }
 

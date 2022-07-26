@@ -17,7 +17,7 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @PostMapping(value = "/registerMovie")
+    @PostMapping(value = "/addMovie")
     public Movie registerMovie(@RequestBody Movie movie) throws Exception {
         return this.movieService.registerMovie(movie);
     }

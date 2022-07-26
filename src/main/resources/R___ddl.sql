@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS `booking`;
 CREATE TABLE `booking` (
                            `booking_id` bigint NOT NULL AUTO_INCREMENT,
                            `created_on` datetime DEFAULT NULL,
-                           `deleted` datetime DEFAULT NULL,
                            `movie_id` varchar(255) DEFAULT NULL,
                            `notification_id` binary(255) DEFAULT NULL,
                            `payment_id` binary(255) DEFAULT NULL,
@@ -20,7 +19,6 @@ CREATE TABLE `booking` (
                            `seat_numbers` varchar(255) DEFAULT NULL,
                            `threatre_id` varchar(255) DEFAULT NULL,
                            `total_price` int DEFAULT NULL,
-                           `updated_on` datetime DEFAULT NULL,
                            `user_name` varchar(255) DEFAULT NULL,
                            PRIMARY KEY (`booking_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -57,18 +55,14 @@ CREATE TABLE `movie` (
                          `active_date_start` datetime DEFAULT NULL,
                          `cast_id` varchar(255) DEFAULT NULL,
                          `created_on` datetime DEFAULT NULL,
-                         `deleted` datetime DEFAULT NULL,
                          `director` varchar(255) DEFAULT NULL,
                          `duration` varchar(255) DEFAULT NULL,
                          `language` varchar(255) DEFAULT NULL,
                          `name` varchar(255) DEFAULT NULL,
-                         `poster_url` varchar(255) DEFAULT NULL,
                          `rating` varchar(255) DEFAULT NULL,
                          `release_year` varchar(255) DEFAULT NULL,
                          `threatre_id` varchar(255) DEFAULT NULL,
-                         `trailer_url` varchar(255) DEFAULT NULL,
                          `type` varchar(255) DEFAULT NULL,
-                         `updated_on` datetime DEFAULT NULL,
                          PRIMARY KEY (`movie_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -86,7 +80,6 @@ CREATE TABLE `notification` (
                                 `sender_email` varchar(255) DEFAULT NULL,
                                 `status` varchar(255) DEFAULT NULL,
                                 `tiny_url` varchar(255) DEFAULT NULL,
-                                `updated_on` datetime DEFAULT NULL,
                                 PRIMARY KEY (`notification_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -97,9 +90,7 @@ CREATE TABLE `offer` (
                          `amount_less` int DEFAULT NULL,
                          `code` varchar(255) DEFAULT NULL,
                          `created_on` datetime DEFAULT NULL,
-                         `deleted` datetime DEFAULT NULL,
                          `description` varchar(255) DEFAULT NULL,
-                         `updated_on` datetime DEFAULT NULL,
                          `valid_end` datetime DEFAULT NULL,
                          `valid_start` datetime DEFAULT NULL,
                          PRIMARY KEY (`id`)
@@ -113,11 +104,9 @@ CREATE TABLE `payment` (
                            `amount` int DEFAULT NULL,
                            `booking_id` bigint DEFAULT NULL,
                            `created_on` datetime DEFAULT NULL,
-                           `deleted` datetime DEFAULT NULL,
                            `method` varchar(255) DEFAULT NULL,
                            `source_details` varchar(255) DEFAULT NULL,
                            `status` varchar(255) DEFAULT NULL,
-                           `updated_on` datetime DEFAULT NULL,
                            PRIMARY KEY (`transaction_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -141,10 +130,8 @@ CREATE TABLE `seat` (
                                `threatre_id` varchar(255) NOT NULL,
                                `booked` bit(1) DEFAULT NULL,
                                `created_on` datetime DEFAULT NULL,
-                               `deleted` datetime DEFAULT NULL,
                                `seat_price` int DEFAULT NULL,
                                `seat_type` varchar(255) DEFAULT NULL,
-                               `updated_on` datetime DEFAULT NULL,
                                PRIMARY KEY (`movie_id`,`show_starts_at`,`seat_number`,`threatre_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -155,10 +142,8 @@ CREATE TABLE `threatre` (
                            `address` varchar(255) DEFAULT NULL,
                            `city` varchar(255) DEFAULT NULL,
                            `created_on` datetime DEFAULT NULL,
-                           `deleted` datetime DEFAULT NULL,
                            `languages` varchar(255) DEFAULT NULL,
                            `name` varchar(255) DEFAULT NULL,
-                           `updated_on` datetime DEFAULT NULL,
                            `user_name` varchar(255) DEFAULT NULL,
                            PRIMARY KEY (`threatre_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -178,12 +163,10 @@ CREATE TABLE `user` (
                         `user_name` varchar(255) NOT NULL,
                         `password` varchar(255) DEFAULT NULL,
                         `created_on` datetime DEFAULT NULL,
-                        `deleted` datetime DEFAULT NULL,
                         `email` varchar(255) DEFAULT NULL,
                         `first_name` varchar(255) NOT NULL,
                         `last_name` varchar(255) NOT NULL,
                         `mobile_number` varchar(255) NOT NULL,
-                        `updated_on` datetime DEFAULT NULL,
                         `user_type` varchar(255) DEFAULT NULL,
                         PRIMARY KEY (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

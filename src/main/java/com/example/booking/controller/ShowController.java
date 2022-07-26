@@ -20,12 +20,12 @@ public class ShowController {
     private ShowService showService;
 
 
-    @PostMapping(value = "/registerScreen")
+    @PostMapping(value = "/addShow")
     public Show registerScreen(@RequestBody Show show) throws Exception {
         return this.showService.registerScreen(show);
     }
 
-    @GetMapping(value = "/getScreensShowingMovie")
+    @GetMapping(value = "/getShowsShowingMovie")
     public ResponseEntity<Object> getScreensShowingMovie(@RequestParam("threatreId") String threatreId,
                                                          @RequestParam("movieId") String movieId, @RequestParam("city") String city) throws Exception {
         try {

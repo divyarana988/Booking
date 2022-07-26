@@ -19,7 +19,7 @@ public class ThreatreController {
     @Autowired
     private ThreatreService threatreService;
 
-    @PostMapping(value = "/registerThreatre")
+    @PostMapping(value = "/addThreatre")
     public Threatre registerTheater(@RequestBody Threatre Threatre) throws IllegalArgumentException {
         return this.threatreService.registerTheater(Threatre);
     }
