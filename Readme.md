@@ -20,15 +20,15 @@
 
 -> Cast details can also be added for movies by hitting "http:localhost:8090/v1/addCast".
 
--> We can add shows for a movie in threatre by hitting "http:localhost:8090/v1/addShow".
+-> We can add showTimings for a movie in threatre by hitting "http:localhost:8090/v1/addShow".
 
--> We can add seats to this show by hitting "http:localhost:8090/v1/addDefaultSeat".
+-> We can add seats to this showTiming by hitting "http:localhost:8090/v1/addDefaultSeat".
 
-->We can book a/many seats in a show for a particular movie by hitting "http:localhost:8090/v1/bookSeats".
+->We can book a/many seats in a showTiming for a particular movie by hitting "http:localhost:8090/v1/bookSeats".
 
--> List of available seats in a show can be retrieved by hitting "http:localhost:8090/v1/getAvailabilityOnAShow".
+-> List of available seats in a showTiming can be retrieved by hitting "http:localhost:8090/v1/getAvailabilityOnAShow".
 
--> List of show/threatres showing a particular movie in a city can be retrived by hitting "http:localhost:8090/v1/getShowsShowingMovie".
+-> List of showTiming/threatres showing a particular movie in a city can be retrived by hitting "http:localhost:8090/v1/getShowsShowingMovie".
 
 -> List of movies in a city can be get by hitting "http:localhost: 8090/v1/getMoviesByCity".
 

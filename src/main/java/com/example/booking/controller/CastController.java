@@ -1,7 +1,9 @@
 package com.example.booking.controller;
 
+import com.example.booking.Request.UpdateCastRequest;
 import com.example.booking.entity.Cast;
 import com.example.booking.service.CastService;
+import com.example.booking.util.SimpleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -26,4 +28,10 @@ public class CastController {
     public List<Cast> getCast(@RequestParam("movieId") String movieId) throws Exception {
         return this.castService.getCast(movieId);
     }
+
+    @PutMapping(value = "/updateCast")
+    public SimpleResponse updateCast(@RequestParam("castId") String castId, UpdateCastRequest request){
+        return this.castService.updateCast(castId, request);
+    }
+
 }

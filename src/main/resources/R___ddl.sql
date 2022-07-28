@@ -3,7 +3,7 @@ CREATE USER 'booking'@'localhost' IDENTIFIED BY 'booking';
 GRANT ALL PRIVILEGES ON booking.* TO 'booking'@'localhost';
 commit;
 
-ALTER DATABASE bookmyshow CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER DATABASE booking CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 
@@ -111,13 +111,13 @@ CREATE TABLE `payment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXISTS `show`;
+DROP TABLE IF EXISTS `showtiming`;
 
-CREATE TABLE `show` (
+CREATE TABLE `showtiming` (
                           `movie_id` varchar(255) NOT NULL,
                           `starts_at` varchar(255) NOT NULL,
                           `threatre_id` varchar(255) NOT NULL,
-                          `ends_at` varchar(255) DEFAULT NULL,
+                          `ends_at` varchar(255) DEFAULT NULL
                           PRIMARY KEY (`movie_id`,`starts_at`,`threatre_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

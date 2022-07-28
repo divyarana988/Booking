@@ -2,9 +2,13 @@ package com.example.booking.service;
 
 import com.example.booking.entity.Movie;
 import com.example.booking.entity.Threatre;
+import com.example.booking.exception.BasicException;
 import com.example.booking.repository.MovieRepository;
 import com.example.booking.repository.ThreatreRepository;
+import com.example.booking.util.SimpleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -21,25 +25,45 @@ public class MovieService{
     @Autowired
     private ThreatreRepository threatreRepository;
 
+    @Autowired
+    private SimpleResponse simpleResponse;
 
-    public MovieService(MovieRepository movieRepository, ThreatreRepository threatreRepository){
+
+    public MovieService(MovieRepository movieRepository, ThreatreRepository threatreRepository, SimpleResponse simpleResponse){
         this.movieRepository = movieRepository;
         this.threatreRepository = threatreRepository;
+        this.simpleResponse = simpleResponse;
     }
 
-    public Movie registerMovie(Movie movie) throws Exception {
+    public ResponseEntity<Object> addMovie(Movie movie) throws Exception {
         try {
             validateInput(movie);
-            Movie newMovie = movie;
-            String movieId = newMovie.getName().replaceAll("\\s", "");
-            newMovie.setMovieId(movieId);
-            newMovie.setCreatedOn(LocalDateTime.now());
-            this.movieRepository.save(newMovie);
-            return newMovie;
+            if(ifMovieExistInThreatre(movie)){
+                return new ResponseEntity<>(this.simpleResponse.build(HttpStatus.BAD_REQUEST.value(), "This movie already exist in this threatre"), HttpStatus.BAD_REQUEST);
+            }else{
+                Movie newMovie = movie;
+                String movieId = newMovie.getName().replaceAll("\\s", "");
+                newMovie.setMovieId(movieId);
+                newMovie.setCreatedOn(LocalDateTime.now());
+                this.movieRepository.save(newMovie);
+                return new ResponseEntity<>(newMovie, HttpStatus.OK);
+            }
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
 
+    }
+
+    public Boolean ifMovieExistInThreatre(Movie movie){
+        String threatreId = movie.getThreatreId();
+        String movieId = movie.getName().replaceAll(" ", "");
+
+        Movie movieFromDb = this.movieRepository.getMovieInAThreatre(threatreId,movieId);
+        if(movieFromDb == null){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     private void validateInput(Movie movie) {
@@ -64,6 +88,19 @@ public class MovieService{
     public List<Movie> getAvailableMovies(String city) {
         List<Movie> availableMovies = this.movieRepository.getAvailableMovies(city);
         return availableMovies;
+    }
+
+    public ResponseEntity<Object> getAllMoviesInAThreatre(String threatreId){
+        if(this.threatreRepository.findById(threatreId).isEmpty()){
+            return new ResponseEntity<>(this.simpleResponse.build(HttpStatus.BAD_REQUEST.value(), "Threatre does not exist"), HttpStatus.BAD_REQUEST);
+        }else{
+            List<Movie> movieList= this.movieRepository.getAllMoviesInAThreatre(threatreId);
+            if(movieList.isEmpty()){
+                return new ResponseEntity<>(this.simpleResponse.build(HttpStatus.BAD_REQUEST.value(), "No movie found in this threatre"), HttpStatus.BAD_REQUEST);
+            }else{
+                return new ResponseEntity<>(movieList, HttpStatus.OK);
+            }
+        }
     }
 
 }

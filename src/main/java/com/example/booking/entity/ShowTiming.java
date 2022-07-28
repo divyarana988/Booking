@@ -7,8 +7,8 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "show")
-public class Show implements Serializable {
+@Table(name = " showtiming")
+public class ShowTiming implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -33,9 +33,10 @@ public class Show implements Serializable {
         this.endsAt = endsAt;
     }
 
+
     @Override
     public String toString() {
-        return "Show [showDetails=" + showDetails + ", endsAt=" + endsAt + "]";
+        return "Show [showDetails=" + showDetails + ", endsAt=" + endsAt +  "]";
     }
 }
 

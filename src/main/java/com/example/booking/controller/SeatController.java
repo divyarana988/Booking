@@ -2,7 +2,7 @@ package com.example.booking.controller;
 
 import com.example.booking.entity.Seat;
 import com.example.booking.service.SeatService;
-import com.example.booking.util.ResponseParser;
+import com.example.booking.util.SimpleResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +23,17 @@ public class SeatController {
     private SeatService seatService;
 
     @Autowired
-    private ResponseParser responseParser;
+    private SimpleResponse simpleResponse;
 
     @PostMapping(value = "/addDefaultSeat")
-    public Seat addDefaultSeatMatrix(@RequestBody Seat seatMatrix) throws Exception {
-        return this.seatService.addDefaultSeatMatrix(seatMatrix);
+    public Seat addDefaultSeat(@RequestBody Seat seat) throws Exception {
+        return this.seatService.addDefaultSeat(seat);
     }
 
     @GetMapping(value = "/getAvailabilityOnAShow")
-    public List<Seat> getAvailabilityOnAScreen(@RequestParam("movieId") String movieId,
-                                                     @RequestParam("threatreId") String theaterId, @RequestParam("showStartsAt") String screenStartsAt) throws JsonProcessingException {
-        return this.seatService.getAvailabilityOnAScreen(movieId, theaterId, screenStartsAt);
+    public List<Seat> getAvailabilityOnAShow(@RequestParam("movieId") String movieId,
+                                                         @RequestParam("threatreId") String threatreId, @RequestParam("showStartsAt") String showStartsAt) throws JsonProcessingException {
+        return this.seatService.getAvailabilityOnAShow(movieId, threatreId, showStartsAt);
     }
 
     @PostMapping(value = "/bookSeats")
@@ -43,12 +43,20 @@ public class SeatController {
             JSONObject bookingDetails = this.seatService.bookSeats(seatsToBook, userName);
             return new ResponseEntity<>(bookingDetails.toString(), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(this.responseParser.build(HttpStatus.BAD_REQUEST.value(), e.getMessage(), e.getMessage()),
+            return new ResponseEntity<>(this.simpleResponse.build(HttpStatus.BAD_REQUEST.value(), e.getMessage()),
                     HttpStatus.BAD_REQUEST);
         } catch (Exception ex) {
-            return new ResponseEntity<>(this.responseParser.build(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                    ex.getMessage(), ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(this.simpleResponse.build(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                  ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping(value = "/cancelSeat")
+    public SimpleResponse cancelSeat(@RequestParam("seatNumber") String seatNumber, @RequestParam("movieId") String movieId,
+                                     @RequestParam("threatreId") String threatreId, @RequestParam("showStartsAt") String showStartsAt, @RequestParam("userName") String userName){
+        return this.seatService.cancelSeat(seatNumber, movieId, threatreId, showStartsAt, userName);
+    }
+
+
 }
 

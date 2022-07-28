@@ -13,4 +13,7 @@ public interface CastRepository extends JpaRepository<Cast, Long> {
     @Query(value = "select * from cast where movie_id = :movieId", nativeQuery=true)
     List<Cast> getCastByMovieId(@Param("movieId") String movieId);
 
+    @Query(value = "select * from cast where cast_id = :castId", nativeQuery = true)
+    Cast findByCastId(@Param("castId") String castId);
+
 }

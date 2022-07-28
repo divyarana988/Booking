@@ -4,10 +4,14 @@ import com.example.booking.entity.*;
 import com.example.booking.enums.SeatType;
 import com.example.booking.exception.BasicException;
 import com.example.booking.repository.*;
+import com.example.booking.util.SimpleResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.api.Http;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -21,7 +25,8 @@ public class SeatService {
     private SeatRepository seatRepository;
 
     @Autowired
-    private UserAuxilaryService userAuxilaryService;
+    private UserService userService;
+
 
     @Autowired
     private BookingRepository bookingRepository;
@@ -38,19 +43,36 @@ public class SeatService {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private ShowRepository showRepository;
 
+    @Autowired
+    private SimpleResponse simpleResponse;
+
+    public SeatService(SeatRepository seatRepository,
+                       UserService userService,
+                       BookingRepository bookingRepository,
+                       PaymentService paymentService,
+                       ThreatreRepository threatreRepository,
+                       MovieRepository movieRepository,
+                       NotificationService notificationService,
+                       ShowRepository showRepository,
+                       SimpleResponse simpleResponse){
+        this.seatRepository = seatRepository;
+        this.userService = userService;
+        this.bookingRepository = bookingRepository;
+        this.paymentService = paymentService;
+        this.threatreRepository = threatreRepository;
+        this.movieRepository = movieRepository;
+        this.notificationService = notificationService;
+        this.showRepository = showRepository;
+        this.simpleResponse = simpleResponse;
+    }
 
     private final int DEFAULT_SEAT_COUNT = 50;
     private final int DEFAULT_SEAT_PRICE = 100;
 
-    public SeatService(SeatRepository seatRepository, BookingRepository bookingRepository, UserAuxilaryService userAuxilaryService, NotificationService notificationService, ThreatreRepository threatreRepository, MovieRepository movieRepository){
-        this.seatRepository = seatRepository;
-        this.bookingRepository = bookingRepository;
-        this.userAuxilaryService = userAuxilaryService;
-        this.notificationService = notificationService;
-        this.threatreRepository = threatreRepository;
-        this.movieRepository = movieRepository;
-    }
+
 
     private void validateInput(List<Seat> seatMatrix) {
         for (Seat seat : seatMatrix) {
@@ -84,7 +106,7 @@ public class SeatService {
         sb.append("" + ch + index);
         return sb.toString();
     }
-    public Seat addDefaultSeatMatrix(Seat seat) throws Exception {
+    public Seat addDefaultSeat(Seat seat) throws Exception {
         try {
             List<Seat> list = new ArrayList<>();
             list.add(seat);
@@ -111,14 +133,15 @@ public class SeatService {
         }
     }
 
-    public List<Seat> getSeatMatrix(String movieId, String theaterId, String screenStartsAt) {
-        List<Seat> seatsMatrix = this.seatRepository.getSeatForShow(movieId, theaterId, screenStartsAt);
-        return seatsMatrix;
+    public List<Seat> getSeatMatrix(String movieId, String threatreId, String showStartsAt) {
+
+            List<Seat> seatsMatrix = this.seatRepository.getSeatForShow(movieId, threatreId, showStartsAt);
+            return seatsMatrix;
     }
 
-    public List<Seat> getAvailabilityOnAScreen(String movieId, String theaterId, String screenStartsAt){
-        List<Seat> seatsMatrix = this.getSeatMatrix(movieId, theaterId, screenStartsAt);
-        return seatsMatrix;
+    public List<Seat> getAvailabilityOnAShow(String movieId, String theaterId, String screenStartsAt){
+        return this.getSeatMatrix(movieId, theaterId, screenStartsAt);
+
     }
 
     /**
@@ -181,7 +204,7 @@ public class SeatService {
             this.bookingRepository.save(booking);
 
             // send the notification and update the notification id in booking table
-            User user = this.userAuxilaryService.findUserByUserName(booking.getUserId());
+            User user = this.userService.findUserByUserNameFromDb(booking.getUserId());
             if (user == null)
                 throw new BasicException("There is no user exists with user name: " + booking.getUserId());
 
@@ -194,9 +217,7 @@ public class SeatService {
 
     private JSONObject makeReturnedData(Booking booking, User user) throws JSONException {
         JSONObject result = new JSONObject();
-        /**
-         * user details:
-         */
+
         JSONObject userDetails = new JSONObject();
         userDetails.put("bookedBy", user.getFirstName() + " " + user.getLastName());
         result.put("userDtails", userDetails);
@@ -225,4 +246,9 @@ public class SeatService {
         return result;
     }
 
+    public SimpleResponse cancelSeat(String seatNumber, String movieId, String threatreId, String showStartsAt, String userName) {
+        User user = this.userService.findUserByUserNameFromDb(userName);
+
+        return this.simpleResponse.build(HttpStatus.OK.value(), "swwwwwxd");
+    }
 }

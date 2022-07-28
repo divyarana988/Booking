@@ -3,6 +3,7 @@ package com.example.booking.util;
 import com.example.booking.entity.User;
 import com.example.booking.repository.UserRepository;
 import com.example.booking.service.UserAuxilaryService;
+import com.example.booking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +16,11 @@ import java.util.ArrayList;
 public class CustomDetailService implements UserDetailsService {
 
     @Autowired
-    private UserAuxilaryService userAuxilaryService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userAuxilaryService.findUserByUserName(username);
+        User user = this.userService.findUserByUserNameFromDb(username);
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
                 new ArrayList<>());
     }

@@ -9,13 +9,14 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>
+public interface UserRepository extends JpaRepository<User, String>
 {
 
     @Query(value = "select * from user where user_name = :userName", nativeQuery = true)
     Optional<User> findUserByUserName(@Param("userName") String userName);
 
-
+    @Query(value = "select * from user where user_name = :userName", nativeQuery = true)
+    User getFromdb(@Param("userName") String userName);
 
 }
 

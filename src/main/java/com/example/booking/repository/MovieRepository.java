@@ -12,8 +12,14 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, String>
 {
 
+    @Query(value = "select * from movie where threatre_id = :threatreId", nativeQuery = true)
+    List<Movie> getAllMoviesInAThreatre(@Param("threatreId") String threatreId);
 
-    @Query(value = "select m.* from movie m join theater t on  t.theater_id = m.theater_id and t.city  = :city",  nativeQuery = true)
+
+    @Query(value = "select m.* from movie m join threatre t on  t.threatre_id = m.threatre_id and t.city  = :city",  nativeQuery = true)
     List<Movie> getAvailableMovies(@Param("city")String city);
+
+    @Query(value = "select * from movie where `name` = :name and threatre_id=:threatreId", nativeQuery = true)
+    Movie getMovieInAThreatre(@Param("name") String name, @Param("threatreId")String threatreId);
 
 }
